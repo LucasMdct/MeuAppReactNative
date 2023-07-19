@@ -1,57 +1,43 @@
-import { useState } from 'react';
-import { StatusBar, Text, View, SafeAreaView, Image, ScrollView, Dimensions } from 'react-native';
-import { Alert, Button, TextInput, Appbar, Provider } from 'react-native-paper';
+import { View,Text, SafeAreaView} from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import HomeScreen from "./screens/HomeScreen";
+
+import AboutScreen from "./screens/AboutScreen";
+
+import ContactScreen from "./screens/ContactScreen";
+
+const TabBrowser = createBottomTabNavigator();
 
 const App = () => {
-  const [Input, setInput] = useState('');
 
-  const handleNomeChange = (text) => {
-    setInput(text);
-  };
+    return(
+        <NavigationContainer>
+            <TabBrowser.Navigator>
+               <TabBrowser.Screen name='Home' component={HomeScreen}
+                 options={{
+                    tabBarIcon: ({ color, size }) => {
+                      return <MaterialCommunityIcons name='account-box-outline' size={size} color={color} />
+                    }
+                  }}/>
+                <TabBrowser.Screen name='Contact' component={ContactScreen}
+                  options={{
+                    tabBarIcon: ({ color, size }) => {
+                      return <MaterialCommunityIcons name='contacts' size={size} color={color} />
+                    }
+                  }}/>
+                <TabBrowser.Screen name='About' component={AboutScreen}
+                  options={{
+                    tabBarIcon: ({ color, size }) => {
+                      return <MaterialCommunityIcons name='information-variant' size={size} color={color} />
+                    }
+                  }}/>
+            </TabBrowser.Navigator>
 
-  const handleButtonPress = () => {
-    alert(`Olá, ${Input}!`);
-  };
+        </NavigationContainer>
+    )
 
-  // Obtém a largura total da tela
-  const screenWidth = Dimensions.get('window').width;
-
-
-  return (
-    <Provider>
-      <View>
-        <SafeAreaView>
-
-          <Appbar.Header>
-            <Appbar.Content title="React-native" />
-          </Appbar.Header>
-          <StatusBar translucent={false} backgroundColor="#ff00ff" />
-          <Image
-            source={require('./imgs/react-app-banner.gif')}
-             style={{ flex: 1, width: screenWidth }}
-             resizeMode="contain"
-          />
-
-          <TextInput
-            placeholder='Informe seu nome'
-            style={{
-              fontSize: 32
-            }}
-            value={Input}
-            onChangeText={handleNomeChange}
-          />
-          <Button mode="contained" onPress={handleButtonPress}>
-            Obter Saudação
-          </Button>
-        </SafeAreaView>
-      </View>
-
-    </Provider>
-  );
-};
+}
 
 export default App;
-
-
-
-
